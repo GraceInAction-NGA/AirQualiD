@@ -4,20 +4,21 @@ const axios = require('axios');
 const BASE_URL = "http://cloud.aeroqual.com";
 const LOGIN_URL = `${BASE_URL}/api/account/login`;
 const INTRUSTMENT_URL = `${BASE_URL}/api/instrument`;
-const DATA_URL = `${BASE_URL}/api/data/`;
+const DATA_URL = `${BASE_URL}/api/data`;
 
-const OBSERVATION_URL = `${BASE_URL}/aq/observation/zipCode/current`;
 let AUTH_TOKEN = null;
 // TODO Do Not Commit This
-const USERNAME = "sean@graceinactiondetroit.org";
-const PASSWORD = ;
+
 
 const login = async () => {
     return await axios.post(`${LOGIN_URL}`, {UserName: USERNAME, Password: PASSWORD});
 }
 
-const setAuthToken = async (data) => {
-    AUTH_TOKEN = data.headers['set-cookie'][0];
+const setAuthToken = async () => {
+    if (!AUTH_TOKEN) {
+        res = await login();
+    }
+    AUTH_TOKEN = await res.headers['set-cookie'][0];
 }
 
 const getInstruments = async () => {
@@ -36,31 +37,43 @@ const get = async (instrument, from, to, averagingperiod, includejournal) => {
     });
 }
 
+const toDate = (date) => { 
+    const isoString = date.toISOString();
+    return {isoString: isoString, date: isoString.split(".")[0]}
+}
+  
+const getNow = () => {
+    const date = new Date();
+    return toDate(date);
+}
+  
+const getAnHourBack = (isoStr) => {
+    const date = new Date(isoStr);
+    date.setHours(date.getHours() - 1);
+    return toDate(date);
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
 const poll = async () => {
     try {
-        const res = await login();
-        setAuthToken(res);
-        console.log(AUTH_TOKEN);
-        const {data} = await getInstruments();
-        console.log(data);
-        const date = new Date();
-        date.setHours(0);
-        date.setMilliseconds(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        const d = new Date();
-        d.setHours(0);
-        d.setMilliseconds(0);
-        d.setMinutes(0);
-        d.setSeconds(0);
-        date.setDate(date.getDate() -1);
-        const from = date.toISOString();
-        const to = d.toISOString();
-        const averagingperiod = 60;
+        await setAuthToken();
+        const res = await getInstruments();
+        const instruments = res.data ? res.data : [];
+        const to = getNow();
+        const from = getAnHourBack(to.isoString);
+        const averagingperiod = 1; // minutes
         const includejournal = false;
-        const a = await get(data[0], from.substring(0, from.length-5), to.substring(0, to.length-5), averagingperiod, includejournal);
-        console.log(a.data);
-        // AirNowModel.create(data);
+
+        asyncForEach(instruments, async (instrument) => {
+            const a = await get(instrument, from.date, to.date, averagingperiod, includejournal);
+            console.log(a.data);
+            // AirNowModel.create(data);
+        })
     } catch(err) {
         console.log('Failed to retrieve data', err);
         return null;
@@ -68,5 +81,5 @@ const poll = async () => {
 }
 
 module.exports = {
-    poll
+    poll,
 }

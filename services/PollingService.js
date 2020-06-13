@@ -21,8 +21,8 @@ const aeroQualPoller = async () => {
 }
 
 const run = () => {
-    //setInterval(purpleAirPoller, INTERVAL);
-    // setInterval(airNowPoller, INTERVAL);
+    setInterval(purpleAirPoller, INTERVAL);
+    setInterval(airNowPoller, INTERVAL);
     setInterval(aeroQualPoller, INTERVAL);
 };
 
