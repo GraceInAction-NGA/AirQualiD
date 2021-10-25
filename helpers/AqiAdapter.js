@@ -90,6 +90,9 @@ const fromAirNow = (data) => {
     const pm25Data = data[1];
     const pm10Data = data[2];
 
+    const hour = String(pm25Data.HourObserved);
+    const paddedHour = hour.length === 2 ? hour : `0${hour}`;
+
     return {
         aqi: {
             o3: o3Data.AQI,
@@ -105,7 +108,7 @@ const fromAirNow = (data) => {
             latitude: pm25Data.Latitude,
             longitude: pm25Data.Longitude
         },
-        timestamp: Date.parse(`${pm25Data.DateObserved.trim()}T${pm25Data.HourObserved}:00`),
+        timestamp: Date.parse(`${pm25Data.DateObserved.trim()}T${paddedHour}:00`),
         source: "AirNow"
     };
 }
