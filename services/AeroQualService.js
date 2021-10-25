@@ -1,4 +1,4 @@
-const AirNowModel = require("../models/AirNowModel");
+const AeroQualModel = require("../models/AeroQualModel");
 const axios = require('axios');
 
 const BASE_URL = "http://cloud.aeroqual.com";
@@ -6,8 +6,13 @@ const LOGIN_URL = `${BASE_URL}/api/account/login`;
 const INTRUSTMENT_URL = `${BASE_URL}/api/instrument`;
 const DATA_URL = `${BASE_URL}/api/data`;
 
+const AVERAGING_PERIOD = 1; // minutes
+const INCLUDE_JOURNAL = false;
+
 let AUTH_TOKEN = null;
-// TODO Do Not Commit This
+
+const USERNAME = "";
+const PASSWORD = "";
 
 
 const login = async () => {
@@ -30,6 +35,7 @@ const getInstruments = async () => {
 }
 
 const get = async (instrument, from, to, averagingperiod, includejournal) => {
+    console.log(AUTH_TOKEN);
     return await axios.get(`${DATA_URL}/${instrument}?from=${from}&to=${to}&averagingperiod=${averagingperiod}&includejournal=${includejournal}`, {
         headers: {
             Cookie: AUTH_TOKEN
@@ -66,16 +72,34 @@ const poll = async () => {
         const instruments = res.data ? res.data : [];
         const to = getNow();
         const from = getAnHourBack(to.isoString);
-        const averagingperiod = 1; // minutes
-        const includejournal = false;
 
-        asyncForEach(instruments, async (instrument) => {
-            const a = await get(instrument, from.date, to.date, averagingperiod, includejournal);
-            console.log(a.data);
-            // AirNowModel.create(data);
+        console.log(instruments);
+        const a = [instruments[0]];
+
+        asyncForEach(a, async (instrument) => {
+            try {
+                const {data} = await get(instrument, from.date, to.date, AVERAGING_PERIOD, INCLUDE_JOURNAL);
+                console.log(data);
+                const reading =  (data.data.length === 0) ? {} : data.data[data.data.length - 1];
+                
+                // reading['id'] = data.name;
+
+                console.log(reading)
+
+                // await AeroQualModel.create(reading);
+            } catch (err) {
+                console.log("> Error")
+                // console.log(err)
+            }
         })
     } catch(err) {
-        console.log('Failed to retrieve data', err);
+        if (err.response.status === 401 && err.config.url.includes(LOGIN_URL)) {
+            console.log('Failed to authenticate');
+            throw(new Error('Failed to authenticate'));
+        } else {
+            console.log('Failed to retrieve data', err);
+        }
+        
         return null;
     }
 }

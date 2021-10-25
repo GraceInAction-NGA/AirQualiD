@@ -145,7 +145,25 @@ const fromAirNow = (data) => {
 }
 
 const fromAeroQual = (data) => {
-    // 
+    const n02 = getAqi(data.NO2);
+    const o3 = getAqi(data.O3);
+    const pm25 = getAqi(data['PM2.5']);
+
+    return {
+        aqi: {
+            n02: n02.aqi,
+            o3: o3.aqi,
+            pm25: pm25.aqi,
+        },
+        category: {
+            n02: n02.category,
+            o3: o3.category,
+            pm25: pm25.category,
+        },
+        timestamp: Date.parse(data.Time),
+        id: data.id,
+        source: "AeroQual"
+    };
 }
 
 module.exports = {

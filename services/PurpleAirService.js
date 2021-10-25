@@ -18,7 +18,7 @@ const poll = async (sensors) => {
             return sensorIds.includes(String(sensor.ID));
         });
 
-        PurpleAirModel.create(validData);
+        await PurpleAirModel.create(validData);
     } catch(e) {
         console.log(e)
     };
