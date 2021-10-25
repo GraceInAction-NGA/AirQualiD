@@ -11,6 +11,7 @@ const parse = (data) => {
 const create = async (datas) => {
     datas.forEach(data => {
         const parsedData = parse(data);
+
         if (Date.now() - data.Stats.lastModified < ONE_WEEK_MILLIS) {
             firebase.database.collection("readings").add(parsedData);
 
