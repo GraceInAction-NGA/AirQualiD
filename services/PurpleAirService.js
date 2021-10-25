@@ -1,5 +1,6 @@
 const PurpleAirModel= require('../models/PurpleAirModel');
 const axios = require('axios');
+var _ = require('lodash');
 const PURPLEAIR_URL_BASE = "https://www.purpleair.com";
 
 
@@ -9,9 +10,12 @@ const get = async (query) => {
 
 const poll = async (sensors) => {
     const sensorIds = sensors.map(sensor => sensor.sensorID);
+    
     const query = sensorIds.reduce((acc, id, i) => {
-        return (i === 0) ? id : `${acc}|${id}`;
+        if (id === undefined) return acc;
+        return (_.isEmpty(acc)) ? id : `${acc}|${id}`;
     }, "");
+
     try {
         const {data} = await get(query);
         const validData = data.results.filter(sensor => {

@@ -11,11 +11,12 @@ const parse = (data) => {
 const create = async (datas) => {
     datas.forEach(data => {
         const parsedData = parse(data);
+
         if (Date.now() - data.Stats.lastModified < ONE_WEEK_MILLIS) {
-            // firebase.database.collection("readings").add(parsedData);
+            firebase.database.collection("readings").add(parsedData);
 
             const aqi = AqiAdapter.fromPurpleAirAqi(parsedData);
-            // firebase.database.collection("aqis").add(aqi);
+            firebase.database.collection("aqis").add(aqi);
         }
     });
 }

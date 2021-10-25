@@ -3,8 +3,8 @@ const PurpleAirService = require('./PurpleAirService');
 const AirNowService = require('./AirNowService');
 const AeroQualService = require('./AeroQualService');
 
-// const INTERVAL = 3600000; // 1 hour // 60000; // 1 min
-const INTERVAL = 60000; // 1 hour // 60000; // 1 min
+const INTERVAL = 3600000; // 1 hour
+// const INTERVAL = 60000; // 1 min
 
 const purpleAirPoller = async () => {
     const sensors = await SensorService.getAll();
@@ -22,8 +22,8 @@ const aeroQualPoller = async () => {
 
 const run = async () => {
     setInterval(purpleAirPoller, INTERVAL);
-    setInterval(airNowPoller, INTERVAL);
-    setInterval(aeroQualPoller, INTERVAL);
+    // setInterval(airNowPoller, INTERVAL);
+    // setInterval(aeroQualPoller, INTERVAL);
 };
 
 module.exports = {
