@@ -1,4 +1,4 @@
-const firebase = require('../services/FirebaseService');
+const firebase = require(process.cwd() + '/services/FirebaseService');
 
 const getAll = async () => {
   return await firebase.database.collection('aqis')

@@ -1,4 +1,4 @@
-const AqiAdapter = require('../helpers/AqiAdapter');
+const AqiAdapter = require(process.cwd() + '/helpers/AqiAdapter');
 const expect = require('chai').expect;
 
 const mockPurpleAirData = {

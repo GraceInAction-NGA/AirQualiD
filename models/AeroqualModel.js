@@ -1,5 +1,5 @@
-const firebase = require('../services/FirebaseService');
-const AqiAdapter = require('../helpers/AqiAdapter');
+const firebase = require(process.cwd() + '/services/FirebaseService');
+const AqiAdapter = require(process.cwd() + '/helpers/AqiAdapter');
 
 
 const create = async (data) => {

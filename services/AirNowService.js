@@ -1,4 +1,4 @@
-const AirNowModel = require("../models/AirNowModel");
+const AirNowModel = require(process.cwd() + "/models/AirNowModel");
 const axios = require('axios');
 
 const BASE_URL = "http://www.airnowapi.org";

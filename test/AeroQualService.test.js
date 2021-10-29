@@ -1,4 +1,4 @@
-const AeroQualService = require('../services/AeroQualService');
+const AeroQualService = require(process.cwd() + '/services/AeroQualService');
 const expect = require('chai').expect;
 const sinon = require("sinon");
 

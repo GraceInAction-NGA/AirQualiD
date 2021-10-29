@@ -1,4 +1,4 @@
-const firebase = require('../services/FirebaseService');
+const firebase = require(process.cwd() + '/services/FirebaseService');
 
 // TODO Consider refactoring to limit the number of reads we make to FireStore
 // Maybe a caching solution would be advisable or a listener/subscription FireStore model.

@@ -1,4 +1,4 @@
-const AeroQualModel = require("../models/AeroQualModel");
+const AeroQualModel = require(process.cwd() + "/models/AeroQualModel");
 const axios = require('axios');
 
 const BASE_URL = "http://cloud.aeroqual.com";

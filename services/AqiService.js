@@ -1,4 +1,4 @@
-const AqiModel = require("../models/AqiModel");
+const AqiModel = require(process.cwd() + "/models/AqiModel");
 
 const get = async (limit) => {
     try {

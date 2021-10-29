@@ -1,5 +1,5 @@
-const firebase = require('../services/FirebaseService');
-const AqiAdapter = require('../helpers/AqiAdapter');
+const firebase = require(process.cwd() + '/services/FirebaseService');
+const AqiAdapter = require(process.cwd() + '/helpers/AqiAdapter');
 
 //TODO save airnow data to firebase
 const create = async (data) => {

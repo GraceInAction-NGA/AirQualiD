@@ -1,4 +1,4 @@
-const PurpleAirModel= require('../models/PurpleAirModel');
+const PurpleAirModel= require(process.cwd() + '/models/PurpleAirModel');
 const axios = require('axios');
 var _ = require('lodash');
 const PURPLEAIR_URL_BASE = "https://www.purpleair.com";

@@ -1,4 +1,4 @@
-const SensorModel = require("../models/SensorModel");
+const SensorModel = require(process.cwd() + "/models/SensorModel");
 
 const getAll = async () => {
     const snapshot = await SensorModel.getAll();
