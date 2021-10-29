@@ -4,6 +4,7 @@ const AqiService = require('./services/AqiService');
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const path = require('path');
 var _ = require('lodash');
 
 const app = express();
@@ -11,10 +12,13 @@ dotenv.config();
 
 const PORT = process.env.PORT || 80;
 
+app.set('rootDirectory', __dirname);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(function(req, res, next) {
+  req.app.get('rootDirectory');
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
