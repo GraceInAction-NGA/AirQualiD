@@ -44,7 +44,9 @@ app.get('/aqi', async (req, res) => {
 });
 
 app.get('/latest', async (req, res) => {
-  const latestDoc = await AqiService.getLatest();
+  // const latestDoc = await AqiService.getLatest();
+  // Using aggregated endpoint
+  const latestDoc = await AqiService.getToday();
 
   if (_.isNull(latestDoc)) {
     res.sendStatus(400);
