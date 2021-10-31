@@ -7,6 +7,10 @@
     "test": "mocha",
     "start": "node app.js"
   },
+  "engines": {
+    "node": "16.x.x",
+    "npm": "8.x.x"
+  },
   "author": "Radical Productions",
   "license": "ISC",
   "repository": {
