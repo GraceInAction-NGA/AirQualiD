@@ -33,7 +33,9 @@ app.get('/aqi', async (req, res) => {
     return; 
   }
 
-  const docs = await AqiService.get(limit);
+  // const docs = await AqiService.get(limit);
+  // Using aggregated endpoint
+  const docs = await AqiService.getByDays(limit);
 
   if (_.isNull(docs)) {
     res.sendStatus(400);

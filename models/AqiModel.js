@@ -15,7 +15,7 @@ const get = async (limit) => {
 
 const getByDays = async (fromDaysAgo) => {
   const startOfToday = new Date();
-  startOfToday.setDate(startOfToday.getDate() - fromDaysAgo); 
+  startOfToday.setDate(startOfToday.getDate() - (fromDaysAgo - 1)); 
   startOfToday.setHours(0, 0, 0, 0, 0);
 
   const endOfToday = new Date();
@@ -29,7 +29,7 @@ const getByDays = async (fromDaysAgo) => {
 };
 
 const getToday = async () => {
-  return await getByDays(0);
+  return await getByDays(1);
 }
 
 const getLatest = async () => {

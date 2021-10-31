@@ -25,6 +25,19 @@ const getLatest = async () => {
     }
 }
 
+const getByDays = async (limit) => {
+    try {
+        const querySnapshot = await AqiModel.getByDays(limit);
+        const data = [];
+        querySnapshot.forEach(doc => data.push(doc.data()));
+        return AggregationService.aggregatedData(data);
+    } catch(err) {
+        console.log('Failed to retrieve data', err);
+        return null;
+    }
+}
+
+
 const getToday = async () => {
     try {
         const querySnapshot = await AqiModel.getToday();
@@ -40,5 +53,6 @@ const getToday = async () => {
 module.exports = {
     getLatest,
     get,
-    getToday
+    getToday,
+    getByDays
 }
