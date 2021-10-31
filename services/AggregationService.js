@@ -22,7 +22,8 @@ const aggregatedData = (data) => {
 const groupByDate = (data) => {
     return data.reduce((acc, aqi) => {
         const date = new Date(aqi.timestamp);
-        const dateString = date.toDateString();
+        date.setHours(0, 0, 0, 0);
+        const dateString = date.toUTCString();
 
         if (!acc[dateString]) {
             acc[dateString] = [aqi]
