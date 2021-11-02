@@ -57,16 +57,7 @@ app.get('/latest', async (req, res) => {
     return;
   }
 
-  if (latestDoc.length === 0) {
-    latestDoc = await AqiService.getByDays(2);
-
-    if (_.isNull(latestDoc)) {
-      res.sendStatus(400);
-      return;
-    }
-  }
-
-  res.send(latestDoc[0]);
+  res.send(latestDoc);
 });
 
 app.get('/sensor', async (req, res) => {
@@ -109,7 +100,7 @@ app.post('/sensor', async (req, res) => {
   res.sendStatus(200);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Example app listening on port ${PORT}!`);
-  PollingService.run();
+  await PollingService.run();
 });

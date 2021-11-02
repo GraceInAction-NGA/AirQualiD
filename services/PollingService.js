@@ -20,10 +20,17 @@ const aeroQualPoller = async () => {
     AeroQualService.poll();
 }
 
+const pollOnStartUp = async () => {
+    await purpleAirPoller();
+    // await airNowPoller();
+    // await aeroQualPoller();
+}
+
 const run = async () => {
     setInterval(purpleAirPoller, INTERVAL);
     // setInterval(airNowPoller, INTERVAL);
     // setInterval(aeroQualPoller, INTERVAL);
+    await pollOnStartUp();
 };
 
 module.exports = {

@@ -7,7 +7,7 @@ const get = async (limit) => {
         const data = [];
         querySnapshot.forEach(doc => data.push(doc.data()));
         return data;
-    } catch(err) {
+    } catch (err) {
         console.log('Failed to retrieve data', err);
         return null;
     }
@@ -19,7 +19,7 @@ const getLatest = async () => {
         const data = [];
         querySnapshot.forEach(doc => data.push(doc.data()));
         return data;
-    } catch(err) {
+    } catch (err) {
         console.log('Failed to latest retrieve data', err);
         return null;
     }
@@ -30,8 +30,9 @@ const getByDays = async (limit) => {
         const querySnapshot = await AqiModel.getByDays(limit);
         const data = [];
         querySnapshot.forEach(doc => data.push(doc.data()));
+
         return AggregationService.aggregatedData(data);
-    } catch(err) {
+    } catch (err) {
         console.log('Failed to retrieve data', err);
         return null;
     }
@@ -40,11 +41,9 @@ const getByDays = async (limit) => {
 
 const getToday = async () => {
     try {
-        const querySnapshot = await AqiModel.getToday();
-        const data = [];
-        querySnapshot.forEach(doc => data.push(doc.data()));
-        return AggregationService.aggregatedData(data);
-    } catch(err) {
+        const data = await getByDays(2);
+        return data[0];
+    } catch (err) {
         console.log('Failed to latest retrieve data', err);
         return null;
     }
