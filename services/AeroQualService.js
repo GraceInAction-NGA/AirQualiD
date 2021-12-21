@@ -1,7 +1,10 @@
 const AeroQualModel = require("../models/AeroQualModel");
 const axios = require('axios');
+const dotenv = require('dotenv');
 
-const BASE_URL = "http://cloud.aeroqual.com";
+dotenv.config();
+
+const BASE_URL = process.env.AEROQUAL_BASE_API;
 const LOGIN_URL = `${BASE_URL}/api/account/login`;
 const INTRUSTMENT_URL = `${BASE_URL}/api/instrument`;
 const DATA_URL = `${BASE_URL}/api/data`;
@@ -11,8 +14,8 @@ const INCLUDE_JOURNAL = false;
 
 let AUTH_TOKEN = null;
 
-const USERNAME = "";
-const PASSWORD = "";
+const USERNAME = process.env.AEROQUAL_USERNAME;
+const PASSWORD = process.env.AEROQUAL_PASSWORD;
 
 
 const login = async () => {

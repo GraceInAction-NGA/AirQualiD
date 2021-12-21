@@ -1,8 +1,11 @@
 const PurpleAirModel= require('../models/PurpleAirModel');
 const axios = require('axios');
-var _ = require('lodash');
-const PURPLEAIR_URL_BASE = "https://www.purpleair.com";
+const dotenv = require('dotenv');
+const _ = require('lodash');
 
+dotenv.config();
+
+const PURPLEAIR_URL_BASE = process.env.PURPLEAIR_BASE_API;
 
 const get = async (query) => {
     return await axios.get(`${PURPLEAIR_URL_BASE}/json?show=${query}`);
