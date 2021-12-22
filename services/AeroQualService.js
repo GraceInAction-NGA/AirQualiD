@@ -18,8 +18,8 @@ const USERNAME = process.env.AEROQUAL_USERNAME;
 const PASSWORD = process.env.AEROQUAL_PASSWORD;
 
 
-const login = async () => {
-    return await axios.post(`${LOGIN_URL}`, {UserName: USERNAME, Password: PASSWORD});
+const login = () => {
+    return axios.post(`${LOGIN_URL}`, {UserName: USERNAME, Password: PASSWORD});
 }
 
 const setAuthToken = async () => {
@@ -38,7 +38,6 @@ const getInstruments = async () => {
 }
 
 const get = async (instrument, from, to, averagingperiod, includejournal) => {
-    console.log(AUTH_TOKEN);
     return await axios.get(`${DATA_URL}/${instrument}?from=${from}&to=${to}&averagingperiod=${averagingperiod}&includejournal=${includejournal}`, {
         headers: {
             Cookie: AUTH_TOKEN
@@ -76,13 +75,11 @@ const poll = async () => {
         const to = getNow();
         const from = getAnHourBack(to.isoString);
 
-        console.log(instruments);
         const a = [instruments[0]];
 
         asyncForEach(a, async (instrument) => {
             try {
                 const {data} = await get(instrument, from.date, to.date, AVERAGING_PERIOD, INCLUDE_JOURNAL);
-                console.log(data);
                 const reading =  (data.data.length === 0) ? {} : data.data[data.data.length - 1];
                 
                 // reading['id'] = data.name;
@@ -97,13 +94,10 @@ const poll = async () => {
         })
     } catch(err) {
         if (err.response.status === 401 && err.config.url.includes(LOGIN_URL)) {
-            console.log('Failed to authenticate');
             throw(new Error('Failed to authenticate'));
         } else {
             console.log('Failed to retrieve data', err);
         }
-        
-        return null;
     }
 }
 

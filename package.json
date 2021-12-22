@@ -4,7 +4,7 @@
   "description": "Server will gather airquality monitors and save it to our Firebase",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc --reporter=lcov --reporter=text mocha",
     "start": "node app.js"
   },
   "engines": {
@@ -32,6 +32,9 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^9.1.3",
-    "sinon": "^12.0.1"
+    "nyc": "^15.1.0",
+    "sinon": "^12.0.1",
+    "moxios": "^0.4.0",
+    "chai-as-promised": "^7.1.1"
   }
 }
