@@ -13,7 +13,7 @@ describe('AeroQualService', function () {
     afterEach(() => moxios.uninstall())
 
     context('when unable to authenticate', () => {
-        it('should throw null', async () => {
+        it('should throw an error', async () => {
             moxios.stubRequest(/.*\/api\/account\/login/g, {
                 status: 401
             });

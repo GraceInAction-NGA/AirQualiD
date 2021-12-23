@@ -15,11 +15,11 @@ const mockPurpleAirData = {
   }
 };
 
-const mockAirNowData = [
+const buildAirNowData = (hour) => ([ 
   {AQI: 20},
-  {AQI: 190, Latitude: 123, Longitude: 123, DateObserved: "2012-02-01", HourObserved: 12},
+  {AQI: 190, Latitude: 123, Longitude: 123, DateObserved: "2012-02-01", HourObserved: hour},
   {AQI: 900}
-];
+]);
 
 const mockAeroQualData = {
   Time: '2020-06-04T18:00:00',
@@ -58,8 +58,23 @@ describe('AqiAdapter', function() {
 
       expect(JSON.stringify(mockPurpleAirAqi)).to.equal(JSON.stringify(expectedAqi));
     })
-    it('should return AQI from AirNow', function() {
-      const mockAirNowAqi = AqiAdapter.fromAirNow(mockAirNowData);
+
+    it('should return AQI from AirNow without padded timestamp', function() {
+      const mockAirNowAqi = AqiAdapter.fromAirNow(buildAirNowData(4));
+      const expectedAirNowAqi = {
+        aqi: { o3: 20, pm25: 190, pm10: 900 },
+        category: { o3: 'Good', pm25: 'Unhealthy', pm10: 'Hazardous' },
+        location: { latitude: 123, longitude: 123 },
+        timestamp: 1328086800000,
+        source: 'AirNow'
+      }
+
+      expect(JSON.stringify(mockAirNowAqi)).to.equal(JSON.stringify(expectedAirNowAqi));
+    })
+
+        
+    it('should return AQI from AirNow with padded timestamp', function() {
+      const mockAirNowAqi = AqiAdapter.fromAirNow(buildAirNowData(12));
       const expectedAirNowAqi = {
         aqi: { o3: 20, pm25: 190, pm10: 900 },
         category: { o3: 'Good', pm25: 'Unhealthy', pm10: 'Hazardous' },
@@ -70,6 +85,7 @@ describe('AqiAdapter', function() {
 
       expect(JSON.stringify(mockAirNowAqi)).to.equal(JSON.stringify(expectedAirNowAqi));
     })
+
     it('should return AQI from Aeroqual', function() {
       const mockAeroQualAqi = AqiAdapter.fromAeroQual(mockAeroQualData);
       const expectedAeroQualAqi = {
