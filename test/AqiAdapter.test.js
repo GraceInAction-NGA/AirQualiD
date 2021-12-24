@@ -47,10 +47,17 @@ const mockAeroQualData = {
 describe('AqiAdapter', function () {
 
   let calculateAqi, getCategory;
+  let concentration, category;
 
   beforeEach(() => {
     calculateAqi = sinon.stub(AqiConverter, "calculateAqi");
     getCategory = sinon.stub(AqiConverter, "getCategory");
+
+    concentration = Math.random();
+    category = "Category " + Math.random();
+
+    calculateAqi.returns(concentration);
+    getCategory.returns(category);
   })
 
   afterEach(() => {
@@ -59,12 +66,7 @@ describe('AqiAdapter', function () {
   })
 
   it('should return AQI from PurpleAir', () => {
-    const expectedConcentration = Math.random();
-    const expectedCategory = "Category " + Math.random();
-    const expectedAqi = buildPurpleAirAqi(expectedConcentration, expectedCategory)
-
-    calculateAqi.returns(expectedConcentration);
-    getCategory.returns(expectedCategory);
+    const expectedAqi = buildPurpleAirAqi(concentration, category)
 
     const aqi = AqiAdapter.fromPurpleAirAqi(mockPurpleAirData);
 
@@ -72,10 +74,7 @@ describe('AqiAdapter', function () {
   })
 
   it('should return AQI from AirNow without padded timestamp', function () {
-    const expectedCategory = "Category " + Math.random();
-    const expectedAirNowAqi = buildAirNowAqi(expectedCategory, 1328086800000);
-
-    getCategory.returns(expectedCategory);
+    const expectedAirNowAqi = buildAirNowAqi(category, 1328086800000);
 
     const aqi = AqiAdapter.fromAirNow(buildAirNowData(4));
 
@@ -84,10 +83,7 @@ describe('AqiAdapter', function () {
 
 
   it('should return AQI from AirNow with padded timestamp', function () {
-    const expectedCategory = "Category " + Math.random();
-    const expectedAirNowAqi = buildAirNowAqi(expectedCategory, 1328115600000);
-
-    getCategory.returns(expectedCategory);
+    const expectedAirNowAqi = buildAirNowAqi(category, 1328115600000);
 
     const aqi = AqiAdapter.fromAirNow(buildAirNowData(12));
 
@@ -95,12 +91,7 @@ describe('AqiAdapter', function () {
   })
 
   it('should return AQI from Aeroqual', function () {
-    const expectedConcentration = Math.random();
-    const expectedCategory = "Category " + Math.random();
-    const expectedAqi = buildAeroQualAqi(expectedConcentration, expectedCategory)
-
-    calculateAqi.returns(expectedConcentration);
-    getCategory.returns(expectedCategory);
+    const expectedAqi = buildAeroQualAqi(concentration, category)
 
     const aqi = AqiAdapter.fromAeroQual(mockAeroQualData);
 
